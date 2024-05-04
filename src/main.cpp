@@ -17,6 +17,7 @@ WiFiClient client;
 MySQL_Connection conn((Client *)&client);
 
 void setup() {
+
   Serial.begin(9600);
   delay(100);
 
@@ -28,7 +29,8 @@ void setup() {
 
   WiFi.begin(ssid, password_wifi);
 
-  while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED)
+  {
     delay(500);
     Serial.print(".");
   }
@@ -38,32 +40,39 @@ void setup() {
   Serial.println("Dirección IP: ");
   Serial.println(WiFi.localIP());
 
-   IPAddress resolvedIP;
-    if (WiFi.hostByName(server, resolvedIP)) {
+  IPAddress resolvedIP;
+    if (WiFi.hostByName(server, resolvedIP)) 
+    {
         Serial.print("Dirección IP resuelta: ");
         Serial.println(resolvedIP);
-    } else {
+    } 
+    else 
+    {
         Serial.println("Error en la búsqueda DNS.");
     }
-
-
   // Conexión a la base de datos MySQL
   Serial.println("Conectando a la base de datos MySQL...");
 
-  if (conn.connect(resolvedIP, port, user, password, db)) {
+  if (conn.connect(resolvedIP, port, user, password, db)) 
+  {
     Serial.println("Conexión exitosa a la base de datos MySQL");
-  } else {
+  }
+  else 
+  {
     Serial.println("Error de conexión a la base de datos MySQL");
     return;
   }
+  
 }
 
 void loop() {
+
 Serial.println("Leyendo datos de la tabla Users:");
 
 // Crear un objeto cursor para ejecutar la consulta
-MySQL_Cursor cur_mem(&conn);
 
+MySQL_Cursor cur_mem(&conn);
+delay(5000);
 // Ejecutar la consulta
 if (cur_mem.execute("SELECT * FROM Users")) {
     // Leer las columnas primero
@@ -104,7 +113,7 @@ if (cur_mem.execute("SELECT * FROM Users")) {
 }
 else 
 {
-    Serial.println("Error al ejecutar la consulta");
+  Serial.println("Error al ejecutar la consulta");
 };
 }
 
