@@ -67,12 +67,58 @@ void setup() {
 
 void loop() {
 
-Serial.println("Leyendo datos de la tabla Users:");
+
+MySQL_Cursor cur_mem(&conn); // Mover la creación del cursor fuera del loop
+
+delay(5000);
+
+
+/*
+independiente de lo que se valla hacer recuerda la asincronia 
+git */
+
+
+/*
+/////////////////////////////////////////////////////////////////////////////
+Agregar DAtaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+////////////////////////////////////////////////////////////////////////////////
+Serial.println("agregando datos de la tabla Users:");
 
 // Crear un objeto cursor para ejecutar la consulta
+     // Espera 5 segundos antes de ejecutar la siguiente inserción
+    // MySQL_Cursor cur_mem(&conn); // Esto debe estar fuera del loop si no quieres crear un nuevo cursor cada vez
 
-MySQL_Cursor cur_mem(&conn);
-delay(5000);
+    String names = "cancan";
+    String lastnames = "ssssss";
+    String nickname = "sssssssssss";
+    String email = "rrrrrrrrrr@.com";
+    String phone = "123456789";
+    String observations = "Sin observaciones";
+
+    String insert_query = "INSERT INTO Users (Names, LastNames, Nickname, Email, Phone, Observaciones) VALUES ('" + names + "', '" + lastnames + "', '" + nickname + "', '" + email + "', '" + phone + "', '" + observations + "')";
+
+    const char* insert_query_cstr = insert_query.c_str();
+
+    
+
+    if (cur_mem.execute(insert_query_cstr)) {
+        Serial.println("Nuevo usuario agregado correctamente.");
+    } else {
+        Serial.println("Error al agregar nuevo usuario.");
+    }
+
+
+}
+*/
+
+
+/*
+////////////////////////////////////////////////////////////////////////////////////////////////////
+Leer Dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+/////////////////////////////////////////////////////////////////////////////////////////////////
+Serial.println("Leyendo datos de la tabla Users:");
+
+
 // Ejecutar la consulta
 if (cur_mem.execute("SELECT * FROM Users")) {
     // Leer las columnas primero
@@ -115,5 +161,10 @@ else
 {
   Serial.println("Error al ejecutar la consulta");
 };
+*/
+
 }
+
+
+
 
