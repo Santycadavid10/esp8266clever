@@ -1,6 +1,10 @@
 #include <ESP8266WiFi.h>
 #include <MySQL_Connection.h>
 #include <MySQL_Cursor.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
+#include <TimeLib.h>
+#include <Timezone.h>
 
 // Datos de conexión a la base de datos
 const char* server = "bm6rbuii3pvzukrbv2az-mysql.services.clever-cloud.com"; // Host de tu servidor MySQL en Clever Cloud
@@ -12,12 +16,19 @@ const int port = 3306; // Puerto de MySQL
 const char* ssid = "CLARO-77C0"; // Nombre de tu red WiFi
 const char* password_wifi = "Cl4r0@6777C0"; // Contraseña de tu red WiFi
 
+
+
+// Objeto para la sincronización de tiempo NTP
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org"); // Horario de verano termina en el último domingo de octubre
+
+
 // Objeto para la conexión MySQL
 WiFiClient client;
 MySQL_Connection conn((Client *)&client);
 
 void setup() {
-
+   
   Serial.begin(9600);
   delay(100);
 
@@ -70,12 +81,38 @@ void loop() {
 
 MySQL_Cursor cur_mem(&conn); // Mover la creación del cursor fuera del loop
 
-delay(5000);
-
 
 /*
 independiente de lo que se valla hacer recuerda la asincronia 
 git */
+
+
+ /*
+   // Actualizar la hora y la fecha
+  timeClient.update();
+  time_t rawtime = timeClient.getEpochTime() - (5 * 3600); // Restar 5 horas en segundos para ajustar a la zona horaria de Colombia
+
+
+  // Convertir la hora actual a una estructura tm
+  struct tm *tiempo = localtime(&rawtime);
+
+  // Formatear la hora
+  char formattedTime[20];
+  sprintf(formattedTime, "%02d:%02d:%02d", tiempo->tm_hour, tiempo->tm_min, tiempo->tm_sec);
+
+  // Formatear la fecha
+  char formattedDate[20];
+  sprintf(formattedDate, "%04d-%02d-%02d", tiempo->tm_year + 1900, tiempo->tm_mon + 1, tiempo->tm_mday);
+
+  // Mostrar la hora y la fecha
+  Serial.print("Hora de Colombia: ");
+  Serial.print(formattedTime);
+  Serial.print(", Fecha: ");
+  Serial.println(formattedDate);
+
+  delay(10000); // Esperar 10 segundos antes de volver a leer la hora y la fecha
+*/
+
 
 
 /*
